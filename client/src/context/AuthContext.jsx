@@ -46,11 +46,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (userData) => {
-        const res = await api.post('/auth/register', userData);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        setUser(res.data.user);
-        return res.data.user;
+        try {
+            const res = await api.post('/auth/register', userData);
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
+            setUser(res.data.user);
+            return res.data.user;
+        } catch (err) {
+            console.error('Registration API Call Failed:', err.response?.data || err.message);
+            throw err;
+        }
     };
 
     const logout = () => {
