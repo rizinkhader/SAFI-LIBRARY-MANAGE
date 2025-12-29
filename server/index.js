@@ -12,6 +12,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors()); // Default allows all origins
 app.use(express.json());
 
+// Check for JWT_SECRET
+if (!process.env.JWT_SECRET) {
+    console.error('CRITICAL ERROR: JWT_SECRET is not defined in environment variables.');
+    process.exit(1);
+}
+
 // Request logging
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
